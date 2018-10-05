@@ -11,6 +11,6 @@ npm install
 After you installed packages, these commands are available in `package.json`.
 
 ```bash
-npm run dev # run the API in development mode
+npm run dev # run in development mode
 ```
 
