@@ -10,6 +10,9 @@ let makeToken = require('./Helpers/Token.js')
 
 const PORT = process.env.PORT || 3000;
 const app = express();
+app.set('views', path.join(__dirname, '/public'));
+app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/public/assets'));
 
 // const csrfMiddleware = csurf({
 //   sessionKey: 'sessionID',
@@ -41,27 +44,35 @@ app.use(cookieParser());
 //   res.send('Invalid CSRF found!')
 // })
 
-var dataSessions;
-
+// index page
 app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname + '/index.html'));
+    res.render('views/index');
 });
 app.get('/form', function(req, res) {
-  console.log(req.session.csrf);
-  res.sendFile(path.join(__dirname + '/form.html'));
+    res.render('views/form');
 });
 app.get('/message', function(req, res) {
-  console.log(req.session.csrf);
-  res.sendFile(path.join(__dirname + '/message.html'));
+    res.render('views/message');
 });
-app.get('/message_success', function(req, res) {
-  console.log(req.session.csrf);
-  res.sendFile(path.join(__dirname + '/message-success.html'));
-});
-app.get('/message_fail', function(req, res) {
-  console.log(req.session.csrf);
-  res.sendFile(path.join(__dirname + '/message-fail.html'));
-});
+// app.get('/', function(req, res) {
+//   res.sendFile(path.join(__dirname + '/index.html'));
+// });
+// app.get('/form', function(req, res) {
+//   console.log(req.session.csrf);
+//   res.sendFile(path.join(__dirname + '/form.html'));
+// });
+// app.get('/message', function(req, res) {
+//   console.log(req.session.csrf);
+//   res.sendFile(path.join(__dirname + '/message.html'));
+// });
+// app.get('/message_success', function(req, res) {
+//   console.log(req.session.csrf);
+//   res.sendFile(path.join(__dirname + '/message-success.html'));
+// });
+// app.get('/message_fail', function(req, res) {
+//   console.log(req.session.csrf);
+//   res.sendFile(path.join(__dirname + '/message-fail.html'));
+// });
 
 
 app.get('/token', function(req, res) {
@@ -84,13 +95,21 @@ app.post('/login', function (req, res) {
   }
 })
 
-app.post('/formsubmit', function (req, res) {
+app.post('/formsubmit', function(req, res) {
   console.log(req.body);
+  let msgTxt = '';
+  let reason = '';
+  let className = '';
   if (req.session.csrf == req.body._csrf) {
-    res.redirect('message_success');
+    msgTxt = 'Your contact information has been successfully added!';
+    reason = 'CSRF token is valid!';
+    className = 'success';
   } else {
-    res.redirect('message_fail');
+    msgTxt = 'Your contact information is invalid.';
+    reason = 'Valid CSRF token required!';
+    className = 'fail';
   }
+  res.render('views/message', { msgTxt: msgTxt, reason: reason, className: className });
 })
 
 
