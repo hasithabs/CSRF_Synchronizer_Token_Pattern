@@ -13,4 +13,4 @@ After you installed packages, these commands are available in `package.json`.
 ```bash
 npm run dev # run in development mode
 ```
-
+Navigate to ``` http://localhost:3000/ ```. The app will automatically reload if you change any of the source files.
