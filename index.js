@@ -6,7 +6,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const morgan = require('morgan')
 
-let makeToken = require('./Helpers/Token.js')
+const makeToken = require('./Helpers/Token.js')
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -44,50 +44,24 @@ app.use(cookieParser());
 //   res.send('Invalid CSRF found!')
 // })
 
-// index page
+// Views
 app.get('/', function(req, res) {
     res.render('views/index');
 });
 app.get('/form', function(req, res) {
     res.render('views/form');
 });
-app.get('/message', function(req, res) {
-    res.render('views/message');
-});
-// app.get('/', function(req, res) {
-//   res.sendFile(path.join(__dirname + '/index.html'));
-// });
-// app.get('/form', function(req, res) {
-//   console.log(req.session.csrf);
-//   res.sendFile(path.join(__dirname + '/form.html'));
-// });
-// app.get('/message', function(req, res) {
-//   console.log(req.session.csrf);
-//   res.sendFile(path.join(__dirname + '/message.html'));
-// });
-// app.get('/message_success', function(req, res) {
-//   console.log(req.session.csrf);
-//   res.sendFile(path.join(__dirname + '/message-success.html'));
-// });
-// app.get('/message_fail', function(req, res) {
-//   console.log(req.session.csrf);
-//   res.sendFile(path.join(__dirname + '/message-fail.html'));
-// });
 
 
 app.get('/token', function(req, res) {
-  console.log(req.session.csrf);
   res.json(req.session.csrf);
 });
 
 app.post('/login', function (req, res) {
-  console.log(req.body);
-  console.log(req.sessionID);
   if (req.body.username == "ssd" && req.body.password == "ssd123") {
     res.cookie('username', req.body.username);
 
     let token = makeToken(50);
-    console.log(token);
     req.session.csrf = token;
     res.redirect('form');
   } else {
@@ -96,7 +70,6 @@ app.post('/login', function (req, res) {
 })
 
 app.post('/formsubmit', function(req, res) {
-  console.log(req.body);
   let msgTxt = '';
   let reason = '';
   let className = '';
