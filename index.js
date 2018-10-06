@@ -31,7 +31,7 @@ app.use(cookieParser());
 
 // Views
 app.get('/', function(req, res) {
-    res.render('views/index');
+    res.render('views/index', { msg: "", className: "" });
 });
 app.get('/form', function(req, res) {
     res.render('views/form');
@@ -50,7 +50,10 @@ app.post('/login', function (req, res) {
     req.session.csrf = token;
     res.redirect('form');
   } else {
-    res.status(401).end();
+    res.render('views/index', {
+      msg: 'Invalid credentials! Please use default username and password.',
+      className: 'message-fail'
+    });
   }
 })
 
