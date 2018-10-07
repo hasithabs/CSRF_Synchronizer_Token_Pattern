@@ -1,5 +1,5 @@
 {
-  "name": "Assignment1",
+  "name": "synchronizer-token-pattern",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
     "dev": "nodemon ."
   },
   "keywords": [],
-  "author": "",
+  "author": "Hasitha Seneviratne",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
